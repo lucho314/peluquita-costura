@@ -9,5 +9,9 @@
 	},
 	"observability": {
 		"enabled": true
+	},
+	"vars": {
+		"SUPABASE_URL": "https://rvijfnojksracxbednsn.supabase.co",
+		"SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2aWpmbm9qa3NyYWN4YmVkbnNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NTE0MDEsImV4cCI6MjA5MDMyNzQwMX0.ALvyHQdk4QDkfwG-2fDtvLUCrsKhDvaIFooW9TGfgq8"
 	}
 }
