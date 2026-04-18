@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro'
-import { supabase } from '../../lib/supabase'
+import { getSupabase } from '../../lib/supabase'
 
 export const prerender = false
 
@@ -35,7 +35,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Insertar la consulta en la base de datos
-    const { error } = await supabase.from('consultas').insert({
+    const { error } = await getSupabase().from('consultas').insert({
       producto_id: body.producto_id || null,
       nombre_cliente: body.nombre,
       email: body.email,

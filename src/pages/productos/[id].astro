@@ -2,11 +2,11 @@
 import Base from '../../layouts/Base.astro'
 import ProductGallery from '../../components/ProductGallery.astro'
 import ContactForm from '../../components/ContactForm.astro'
-import { supabase } from '../../lib/supabase'
+import { getSupabase } from '../../lib/supabase'
 
 const { id } = Astro.params
 
-const { data: producto } = await supabase
+const { data: producto } = await getSupabase()
   .from('productos')
   .select(`
     id,
