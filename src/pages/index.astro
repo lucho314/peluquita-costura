@@ -1,17 +1,113 @@
 ---
+import Base from '../layouts/Base.astro'
+import Hero from '../components/Hero.astro'
+import ProductCard from '../components/ProductCard.astro'
+import { supabase } from '../lib/supabase'
 
+// Obtener productos destacados (últimos 6 con stock)
+const { data: productos } = await supabase
+  .from('productos')
+  .select(`
+    id,
+    nombre,
+    precio_venta,
+    stock,
+    producto_imagenes (
+      url,
+      orden
+    )
+  `)
+  .gt('stock', 0)
+  .order('created_at', { ascending: false })
+  .limit(6)
+
+const productosConImagenes = productos?.map(producto => ({
+  ...producto,
+  imagen: producto.producto_imagenes?.[0]?.url
+})) || []
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base title="Peluquita Costuras">
+  <Hero
+    title="Costura artesanal hecha a medida"
+    subtitle="Confecciones únicas con dedicación y calidad"
+  />
+
+  <!-- Productos destacados -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 mb-4">
+          Nuestras Creaciones
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Descubrí nuestra selección de prendas y confecciones artesanales
+        </p>
+      </div>
+
+      {productosConImagenes.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {productosConImagenes.map((producto) => (
+            <ProductCard
+              id={producto.id}
+              nombre={producto.nombre}
+              precio={producto.precio_venta}
+              imagen={producto.imagen}
+              stock={producto.stock}
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12">
+          <p class="text-gray-500 text-lg">No hay productos disponibles en este momento.</p>
+        </div>
+      )}
+
+      <div class="text-center">
+        <a
+          href="/productos"
+          class="inline-flex items-center px-6 py-3 border-2 border-[var(--color-primary)] text-base font-medium rounded-md text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white transition-colors"
+        >
+          Ver catálogo completo
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre nosotros -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 mb-6">
+          Sobre Nosotros
+        </h2>
+        <p class="text-lg text-gray-700 mb-6">
+          En Peluquita Costuras nos dedicamos a la confección de prendas y accesorios textiles únicos y personalizados.
+          Cada pieza es trabajada con dedicación y atención al detalle, utilizando materiales de primera calidad.
+        </p>
+        <p class="text-lg text-gray-700">
+          Desde vestidos a medida hasta almohadones bordados, cortinas artesanales y bolsos de tela,
+          cada confección refleja nuestro compromiso con la excelencia y el diseño personalizado.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="py-16 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mb-4">
+        ¿Necesitás algo a medida?
+      </h2>
+      <p class="text-xl text-white/90 mb-8">
+        Contactanos y te ayudamos a crear la confección perfecta para vos
+      </p>
+      <a
+        href="/contacto"
+        class="inline-flex items-center px-8 py-3 border-2 border-white text-base font-medium rounded-md text-white hover:bg-white hover:text-[var(--color-primary)] transition-colors"
+      >
+        Contactar ahora
+      </a>
+    </div>
+  </section>
+</Base>

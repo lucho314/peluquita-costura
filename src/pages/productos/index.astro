@@ -1,0 +1,85 @@
+---
+import Base from '../../layouts/Base.astro'
+import ProductCard from '../../components/ProductCard.astro'
+import { supabase } from '../../lib/supabase'
+
+// Obtener todos los productos con stock
+const { data: productos } = await supabase
+  .from('productos')
+  .select(`
+    id,
+    nombre,
+    precio_venta,
+    stock,
+    producto_imagenes (
+      url,
+      orden
+    )
+  `)
+  .gt('stock', 0)
+  .order('created_at', { ascending: false })
+
+const productosConImagenes = productos?.map(producto => ({
+  ...producto,
+  imagen: producto.producto_imagenes?.[0]?.url
+})) || []
+---
+
+<Base title="Catálogo - Peluquita Costuras" description="Explorá nuestro catálogo completo de prendas y confecciones artesanales">
+  <!-- Header -->
+  <section class="bg-gradient-to-br from-[var(--color-secondary)] to-[var(--color-tertiary)] py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl sm:text-5xl font-serif font-bold text-white mb-4">
+        Nuestro Catálogo
+      </h1>
+      <p class="text-xl text-white/90 max-w-2xl mx-auto">
+        Prendas y confecciones hechas a medida
+      </p>
+    </div>
+  </section>
+
+  <!-- Catálogo de productos -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {productosConImagenes.length > 0 ? (
+        <>
+          <div class="mb-8">
+            <p class="text-gray-600">
+              Mostrando {productosConImagenes.length} {productosConImagenes.length === 1 ? 'producto' : 'productos'}
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {productosConImagenes.map((producto) => (
+              <ProductCard
+                id={producto.id}
+                nombre={producto.nombre}
+                precio={producto.precio_venta}
+                imagen={producto.imagen}
+                stock={producto.stock}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <div class="text-center py-16">
+          <svg class="mx-auto h-24 w-24 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+          </svg>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">
+            No hay productos disponibles
+          </h3>
+          <p class="text-gray-500 mb-8">
+            En este momento no tenemos productos en stock. Volvé pronto o contactanos para consultar por encargos.
+          </p>
+          <a
+            href="/contacto"
+            class="inline-flex items-center px-6 py-3 border-2 border-[var(--color-primary)] text-base font-medium rounded-md text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white transition-colors"
+          >
+            Contactar
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+</Base>

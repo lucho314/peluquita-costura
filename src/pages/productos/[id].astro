@@ -1,0 +1,149 @@
+---
+import Base from '../../layouts/Base.astro'
+import ProductGallery from '../../components/ProductGallery.astro'
+import ContactForm from '../../components/ContactForm.astro'
+import { supabase } from '../../lib/supabase'
+
+export const prerender = true
+
+export async function getStaticPaths() {
+  const { data: productos } = await supabase
+    .from('productos')
+    .select('id')
+    .gt('stock', 0)
+
+  return productos?.map(p => ({
+    params: { id: String(p.id) }
+  })) ?? []
+}
+
+const { id } = Astro.params
+
+const { data: producto } = await supabase
+  .from('productos')
+  .select(`
+    id,
+    nombre,
+    precio_venta,
+    stock,
+    producto_imagenes (
+      id,
+      url,
+      orden,
+      alt
+    )
+  `)
+  .eq('id', id)
+  .single()
+
+if (!producto) {
+  return Astro.redirect('/productos')
+}
+
+const imagenes = producto.producto_imagenes || []
+const imagenesSorted = imagenes.sort((a, b) => (a.orden || 0) - (b.orden || 0))
+
+const precioFormateado = new Intl.NumberFormat('es-AR', {
+  style: 'currency',
+  currency: 'ARS',
+  minimumFractionDigits: 0
+}).format(producto.precio_venta)
+---
+
+<Base title={`${producto.nombre} - Peluquita Costuras`} description={`${producto.nombre} - ${precioFormateado}`}>
+  <!-- Breadcrumb -->
+  <nav class="bg-gray-50 border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <ol class="flex items-center space-x-2 text-sm">
+        <li>
+          <a href="/" class="text-gray-500 hover:text-[var(--color-primary)] transition-colors">
+            Inicio
+          </a>
+        </li>
+        <li class="text-gray-400">/</li>
+        <li>
+          <a href="/productos" class="text-gray-500 hover:text-[var(--color-primary)] transition-colors">
+            Catálogo
+          </a>
+        </li>
+        <li class="text-gray-400">/</li>
+        <li class="text-gray-900 font-medium truncate">
+          {producto.nombre}
+        </li>
+      </ol>
+    </div>
+  </nav>
+
+  <!-- Detalle del producto -->
+  <section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Galería de imágenes -->
+        <div>
+          <ProductGallery images={imagenesSorted} productName={producto.nombre} />
+        </div>
+
+        <!-- Información del producto -->
+        <div>
+          <h1 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 mb-4">
+            {producto.nombre}
+          </h1>
+
+          <p class="text-3xl font-bold mb-4" style="color: var(--color-primary)">
+            {precioFormateado}
+          </p>
+
+          {producto.stock > 0 ? (
+            <div class="mb-6">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                Disponible ({producto.stock} {producto.stock === 1 ? 'unidad' : 'unidades'})
+              </span>
+            </div>
+          ) : (
+            <div class="mb-6">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                Sin stock
+              </span>
+            </div>
+          )}
+
+          <div class="prose prose-gray mb-8">
+            <p class="text-gray-700 leading-relaxed">
+              Esta confección es única y hecha a medida con materiales de primera calidad.
+              Cada pieza refleja nuestro compromiso con la excelencia y el diseño personalizado.
+            </p>
+          </div>
+
+          <!-- Formulario de consulta -->
+          <div class="border-t border-gray-200 pt-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">
+              Consultar sobre este producto
+            </h2>
+            <p class="text-gray-600 mb-6">
+              ¿Tenés alguna duda o querés hacer un encargo? Dejanos tu consulta y te respondemos a la brevedad.
+            </p>
+            <ContactForm productId={producto.id} productName={producto.nombre} />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Volver al catálogo -->
+  <section class="py-8 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <a
+        href="/productos"
+        class="inline-flex items-center text-[var(--color-primary)] hover:text-[var(--color-primary)]/80 font-medium transition-colors"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Volver al catálogo
+      </a>
+    </div>
+  </section>
+</Base>

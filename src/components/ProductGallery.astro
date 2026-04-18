@@ -1,0 +1,66 @@
+---
+interface Image {
+  url: string
+  alt?: string | null
+}
+
+interface Props {
+  images: Image[]
+  productName: string
+}
+
+const { images, productName } = Astro.props
+const sortedImages = images.sort((a, b) => (a.alt || '').localeCompare(b.alt || ''))
+---
+
+<div class="space-y-4">
+  {sortedImages.length > 0 ? (
+    <>
+      <div class="aspect-square overflow-hidden rounded-lg bg-gray-100">
+        <img
+          id="main-image"
+          src={sortedImages[0].url}
+          alt={sortedImages[0].alt || productName}
+          class="w-full h-full object-cover"
+        />
+      </div>
+      
+      {sortedImages.length > 1 && (
+        <div class="grid grid-cols-4 gap-4">
+          {sortedImages.map((image, index) => (
+            <button
+              type="button"
+              data-image={image.url}
+              class="aspect-square overflow-hidden rounded-md bg-gray-100 hover:ring-2 hover:ring-[var(--color-primary)] transition-all thumbnail"
+            >
+              <img
+                src={image.url}
+                alt={image.alt || `${productName} - imagen ${index + 1}`}
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </button>
+          ))}
+        </div>
+      )}
+    </>
+  ) : (
+    <div class="aspect-square rounded-lg bg-gray-100 flex items-center justify-center">
+      <p class="text-gray-400">Sin imágenes disponibles</p>
+    </div>
+  )}
+</div>
+
+<script>
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  const mainImage = document.getElementById('main-image') as HTMLImageElement;
+  
+  thumbnails.forEach((thumbnail) => {
+    thumbnail.addEventListener('click', () => {
+      const imageUrl = thumbnail.getAttribute('data-image');
+      if (imageUrl && mainImage) {
+        mainImage.src = imageUrl;
+      }
+    });
+  });
+</script>
