@@ -1,9 +1,11 @@
 import type { APIRoute } from 'astro'
-import { supabase } from '../../lib/supabase'
+import { getSupabase } from '../../lib/supabase'
 
 export const prerender = false
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
+  const runtime = (locals as any).runtime
+  const supabase = getSupabase(runtime.env)
   try {
     const body = await request.json()
 

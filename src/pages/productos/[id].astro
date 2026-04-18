@@ -2,20 +2,10 @@
 import Base from '../../layouts/Base.astro'
 import ProductGallery from '../../components/ProductGallery.astro'
 import ContactForm from '../../components/ContactForm.astro'
-import { supabase } from '../../lib/supabase'
+import { getSupabase } from '../../lib/supabase'
 
-export const prerender = true
-
-export async function getStaticPaths() {
-  const { data: productos } = await supabase
-    .from('productos')
-    .select('id')
-    .gt('stock', 0)
-
-  return productos?.map(p => ({
-    params: { id: String(p.id) }
-  })) ?? []
-}
+const runtime = Astro.locals.runtime
+const supabase = getSupabase(runtime.env)
 
 const { id } = Astro.params
 

@@ -2,7 +2,10 @@
 import Base from '../layouts/Base.astro'
 import Hero from '../components/Hero.astro'
 import ProductCard from '../components/ProductCard.astro'
-import { supabase } from '../lib/supabase'
+import { getSupabase } from '../lib/supabase'
+
+const runtime = Astro.locals.runtime
+const supabase = getSupabase(runtime.env)
 
 // Obtener productos destacados (últimos 6 con stock)
 const { data: productos } = await supabase
