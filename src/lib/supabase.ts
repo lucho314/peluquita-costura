@@ -1,5 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
+import { env } from 'cloudflare:workers'
 
-export function getSupabase(env: { SUPABASE_URL: string; SUPABASE_ANON_KEY: string }) {
-  return createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY)
-}
+export const supabase = createClient(
+  env.SUPABASE_URL,
+  env.SUPABASE_ANON_KEY
+)

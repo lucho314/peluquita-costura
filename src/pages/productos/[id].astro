@@ -2,10 +2,7 @@
 import Base from '../../layouts/Base.astro'
 import ProductGallery from '../../components/ProductGallery.astro'
 import ContactForm from '../../components/ContactForm.astro'
-import { getSupabase } from '../../lib/supabase'
-
-const runtime = Astro.locals.runtime
-const supabase = getSupabase(runtime.env)
+import { supabase } from '../../lib/supabase'
 
 const { id } = Astro.params
 
