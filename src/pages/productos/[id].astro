@@ -28,16 +28,78 @@ if (!producto) {
 }
 
 const imagenes = producto.producto_imagenes || []
-const imagenesSorted = imagenes.sort((a, b) => (a.orden || 0) - (b.orden || 0))
+const imagenesSorted = [...imagenes].sort((a, b) => (a.orden || 0) - (b.orden || 0))
 
 const precioFormateado = new Intl.NumberFormat('es-AR', {
   style: 'currency',
   currency: 'ARS',
   minimumFractionDigits: 0
 }).format(producto.precio_venta)
+
+const productUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://peluquita-costura.luciano-zapata314.workers.dev').toString()
+const productImage = imagenesSorted[0]?.url
+const productImageAlt = imagenesSorted[0]?.alt || `${producto.nombre} de Peluquita Costuras`
+const productDescription = `${producto.nombre} hecho a medida por Peluquita Costuras. Consultá disponibilidad, precio y encargos personalizados.`
+const productImages = imagenesSorted.map((imagen) => imagen.url)
+const productJsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: producto.nombre,
+    ...(productImages.length > 0 ? { image: productImages } : {}),
+    description: productDescription,
+    category: 'Confecciones artesanales',
+    brand: {
+      '@type': 'Brand',
+      name: 'Peluquita Costuras'
+    },
+    offers: {
+      '@type': 'Offer',
+      price: producto.precio_venta,
+      priceCurrency: 'ARS',
+      availability: producto.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: {
+        '@id': new URL('/#negocio', Astro.site ?? 'https://peluquita-costura.luciano-zapata314.workers.dev').toString()
+      },
+      url: productUrl
+    }
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Inicio',
+        item: new URL('/', Astro.site ?? 'https://peluquita-costura.luciano-zapata314.workers.dev').toString()
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Catálogo',
+        item: new URL('/productos', Astro.site ?? 'https://peluquita-costura.luciano-zapata314.workers.dev').toString()
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: producto.nombre,
+        item: productUrl
+      }
+    ]
+  }
+]
 ---
 
-<Base title={`${producto.nombre} - Peluquita Costuras`} description={`${producto.nombre} - ${precioFormateado}`}>
+<Base
+  title={`${producto.nombre} | Peluquita Costuras`}
+  description={`${productDescription} Precio: ${precioFormateado}.`}
+  image={productImage}
+  imageAlt={productImage ? productImageAlt : undefined}
+  ogType="product"
+  jsonLd={productJsonLd}
+>
   <!-- Breadcrumb -->
   <nav class="bg-gray-50 border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -67,16 +129,16 @@ const precioFormateado = new Intl.NumberFormat('es-AR', {
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <!-- Galería de imágenes -->
         <div>
-          <ProductGallery images={imagenesSorted} productName={producto.nombre} />
+          <ProductGallery images={imagenesSorted} productName={producto.nombre} productId={producto.id} />
         </div>
 
         <!-- Información del producto -->
         <div>
           <h1 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 mb-4">
-            {producto.nombre}
+            <span transition:name={`producto-${producto.id}-titulo`}>{producto.nombre}</span>
           </h1>
 
-          <p class="text-3xl font-bold mb-4" style="color: var(--color-primary)">
+          <p class="text-3xl font-bold mb-4" style="color: var(--color-primary)" transition:name={`producto-${producto.id}-precio`}>
             {precioFormateado}
           </p>
 
