@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Disallow: /api/
+
+Sitemap: https://peluquita-costura.luciano-zapata314.workers.dev/sitemap.xml

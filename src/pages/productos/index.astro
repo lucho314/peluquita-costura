@@ -23,9 +23,55 @@ const productosConImagenes = productos?.map(producto => ({
   ...producto,
   imagen: producto.producto_imagenes?.[0]?.url
 })) || []
+
+const siteUrl = Astro.site ?? 'https://peluquita-costura.luciano-zapata314.workers.dev'
+const catalogUrl = new URL('/productos', siteUrl).toString()
+const catalogJsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': catalogUrl,
+    url: catalogUrl,
+    name: 'Catálogo de confecciones artesanales',
+    description: 'Prendas, accesorios textiles y confecciones artesanales disponibles en Paraná, Entre Ríos.',
+    inLanguage: 'es-AR',
+    isPartOf: {
+      '@id': new URL('/#website', siteUrl).toString()
+    }
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Productos disponibles de Peluquita Costuras',
+    itemListElement: productosConImagenes.map((producto, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: new URL(`/productos/${producto.id}`, siteUrl).toString(),
+      name: producto.nombre
+    }))
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Inicio',
+        item: new URL('/', siteUrl).toString()
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Catálogo',
+        item: catalogUrl
+      }
+    ]
+  }
+]
 ---
 
-<Base title="Catálogo - Peluquita Costuras" description="Explorá nuestro catálogo completo de prendas y confecciones artesanales">
+<Base title="Catálogo de confecciones artesanales | Peluquita Costuras" description="Explorá prendas, accesorios textiles y confecciones artesanales disponibles. Piezas hechas a medida con materiales de calidad en Paraná, Entre Ríos." jsonLd={catalogJsonLd}>
   <!-- Header -->
   <section class="bg-gradient-to-br from-[var(--color-secondary)] to-[var(--color-tertiary)] py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

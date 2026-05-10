@@ -25,9 +25,26 @@ const productosConImagenes = productos?.map(producto => ({
   ...producto,
   imagen: producto.producto_imagenes?.[0]?.url
 })) || []
+
+const homeJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': new URL('/', Astro.site ?? 'https://peluquita-costura.luciano-zapata314.workers.dev').toString(),
+  url: new URL('/', Astro.site ?? 'https://peluquita-costura.luciano-zapata314.workers.dev').toString(),
+  name: 'Peluquita Costuras | Costura artesanal a medida',
+  description: 'Costura artesanal a medida en Paraná, Entre Ríos. Prendas, accesorios textiles, cortinas, almohadones y confecciones personalizadas con terminaciones cuidadas.',
+  inLanguage: 'es-AR',
+  isPartOf: {
+    '@id': new URL('/#website', Astro.site ?? 'https://peluquita-costura.luciano-zapata314.workers.dev').toString()
+  }
+}
 ---
 
-<Base title="Peluquita Costuras">
+<Base
+  title="Peluquita Costuras | Costura artesanal a medida"
+  description="Costura artesanal a medida en Paraná, Entre Ríos. Prendas, accesorios textiles, cortinas, almohadones y confecciones personalizadas con terminaciones cuidadas."
+  jsonLd={homeJsonLd}
+>
   <Hero
     title="Costura artesanal hecha a medida"
     subtitle="Confecciones únicas con dedicación y calidad"
