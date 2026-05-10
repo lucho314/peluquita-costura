@@ -7,38 +7,49 @@ interface Props {
 const { title, subtitle } = Astro.props
 ---
 
-<section class="relative flex min-h-[86vh] items-center overflow-hidden bg-[var(--color-background)]">
-  <img
-    src="/logo-horizontal.webp"
-    alt=""
-    aria-hidden="true"
-    width="1717"
-    height="916"
-    loading="eager"
-    fetchpriority="high"
-    decoding="async"
-    class="absolute inset-0 h-full w-full object-cover"
-  />
-  <div class="absolute inset-0 bg-gradient-to-r from-[var(--color-background)]/70 via-[var(--color-background)]/20 to-transparent md:from-[var(--color-background)]/45"></div>
+<section class="relative flex min-h-[calc(100svh-6rem)] items-center overflow-hidden bg-[var(--color-background)] pt-24 md:min-h-[86vh] md:pt-0">
+  <picture class="absolute inset-0 h-full w-full">
+    <source media="(max-width: 767px)" srcset="/logo-vertical.webp" width="863" height="1822" />
+    <img
+      src="/logo-horizontal.webp"
+      alt=""
+      aria-hidden="true"
+      width="1717"
+      height="916"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      class="h-full w-full object-cover object-top md:object-center"
+    />
+  </picture>
+  <div class="absolute inset-0 bg-[var(--color-background)]/12 md:bg-gradient-to-r md:from-[var(--color-background)]/70 md:via-[var(--color-background)]/20 md:to-transparent"></div>
 
-  <div class="relative z-10 mx-auto w-full max-w-7xl px-6 pt-24 sm:px-8">
-    <div class="max-w-xl rounded-2xl bg-white/35 p-8 shadow-[0_20px_80px_rgba(31,27,19,0.12)] backdrop-blur-sm md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none">
+  <div class="relative z-10 mx-auto w-full max-w-7xl px-8 pb-14 pt-[3vh] sm:px-10 md:px-8 md:pb-0 md:pt-24">
+    <div class="max-w-xl md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none">
       <span class="font-label mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-primary)]">
         Taller Artesanal
       </span>
-      <h1 class="font-headline mb-6 text-5xl leading-tight text-[var(--color-primary)] md:text-7xl">
+      <h1 class="font-headline mb-5 text-5xl leading-[0.95] text-[var(--color-primary)] sm:text-6xl md:text-7xl">
         {title.split(' hecha a medida')[0]}
         <br />
-        <span class="font-script text-6xl lowercase opacity-90 md:text-8xl">hecha a medida</span>
+        <span class="font-script text-5xl lowercase opacity-80 sm:text-6xl md:text-8xl">hecha a medida</span>
       </h1>
-      <p class="font-body mb-10 max-w-lg text-xl leading-relaxed text-[var(--color-on-surface-variant)]">
+      <div class="mb-6 flex items-center gap-5 text-[var(--color-secondary)] md:hidden" aria-hidden="true">
+        <span class="h-px flex-1 bg-[var(--color-secondary)]/55"></span>
+        <span class="font-script text-4xl leading-none">♡</span>
+        <span class="h-px flex-1 bg-[var(--color-secondary)]/55"></span>
+      </div>
+      <p class="font-body mb-8 max-w-[22rem] text-lg leading-relaxed text-[var(--color-on-surface-variant)] md:max-w-lg md:text-xl">
         {subtitle}, transformando cada tela en una obra de arte para tu día a día.
       </p>
       <a
         href="/productos"
-        class="group relative inline-flex overflow-hidden rounded-full bg-[var(--color-primary)] px-10 py-4 text-white transition-all hover:shadow-xl hover:shadow-[var(--color-primary)]/20"
+        class="group relative mt-8 inline-flex overflow-hidden rounded-lg bg-[var(--color-primary)] px-10 py-4 text-white shadow-xl shadow-[var(--color-primary)]/15 transition-all hover:shadow-[var(--color-primary)]/20 md:mt-0 md:rounded-full"
       >
         <span class="font-label relative z-10 font-bold tracking-wider">VER CATÁLOGO</span>
+        <svg class="relative z-10 ml-8 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 12h14m-6-6 6 6-6 6" />
+        </svg>
         <span class="absolute inset-0 translate-y-full bg-[var(--color-secondary-container)] opacity-20 transition-transform duration-300 group-hover:translate-y-0"></span>
       </a>
     </div>
