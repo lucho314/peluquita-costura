@@ -1,7 +1,7 @@
 {
   "name": "Peluquita Costuras",
   "short_name": "Peluquita",
-  "description": "Costura artesanal a medida en Buenos Aires.",
+  "description": "Costura artesanal a medida en Paraná, Entre Ríos.",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -14,8 +14,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#8b4557",
-  "background_color": "#ffffff",
+  "theme_color": "#6f2e40",
+  "background_color": "#fff8f1",
   "display": "standalone",
   "start_url": "/"
 }

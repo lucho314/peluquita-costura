@@ -2,45 +2,45 @@
 interface Props {
   title: string
   subtitle: string
-  ctaText?: string
-  ctaHref?: string
 }
 
-const { title, subtitle, ctaText = 'Ver Catálogo', ctaHref = '/productos' } = Astro.props
+const { title, subtitle } = Astro.props
 ---
 
-<section class="relative overflow-hidden bg-gradient-to-br from-[var(--color-secondary)] to-[var(--color-tertiary)] py-24 lg:py-32">
+<section class="relative flex min-h-[86vh] items-center overflow-hidden bg-[var(--color-background)]">
   <img
-    src="/hero-costura.png"
+    src="/logo-horizontal.webp"
     alt=""
     aria-hidden="true"
-    width="3994"
-    height="2609"
+    width="1717"
+    height="916"
     loading="eager"
     fetchpriority="high"
     decoding="async"
-    class="absolute inset-0 h-full w-full object-cover opacity-50"
+    class="absolute inset-0 h-full w-full object-cover"
   />
+  <div class="absolute inset-0 bg-gradient-to-r from-[var(--color-background)]/70 via-[var(--color-background)]/20 to-transparent md:from-[var(--color-background)]/45"></div>
 
-  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-white mb-6 drop-shadow-lg">
-      {title}
-    </h1>
-
-    <p class="text-xl sm:text-2xl text-white/90 mb-8 max-w-3xl mx-auto drop-shadow">
-      {subtitle}
-    </p>
-
-    {ctaText && ctaHref && (
+  <div class="relative z-10 mx-auto w-full max-w-7xl px-6 pt-24 sm:px-8">
+    <div class="max-w-xl rounded-2xl bg-white/35 p-8 shadow-[0_20px_80px_rgba(31,27,19,0.12)] backdrop-blur-sm md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none">
+      <span class="font-label mb-4 block text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-primary)]">
+        Taller Artesanal
+      </span>
+      <h1 class="font-headline mb-6 text-5xl leading-tight text-[var(--color-primary)] md:text-7xl">
+        {title.split(' hecha a medida')[0]}
+        <br />
+        <span class="font-script text-6xl lowercase opacity-90 md:text-8xl">hecha a medida</span>
+      </h1>
+      <p class="font-body mb-10 max-w-lg text-xl leading-relaxed text-[var(--color-on-surface-variant)]">
+        {subtitle}, transformando cada tela en una obra de arte para tu día a día.
+      </p>
       <a
-        href={ctaHref}
-        class="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 transition-colors shadow-lg hover:shadow-xl"
+        href="/productos"
+        class="group relative inline-flex overflow-hidden rounded-full bg-[var(--color-primary)] px-10 py-4 text-white transition-all hover:shadow-xl hover:shadow-[var(--color-primary)]/20"
       >
-        {ctaText}
-        <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-        </svg>
+        <span class="font-label relative z-10 font-bold tracking-wider">VER CATÁLOGO</span>
+        <span class="absolute inset-0 translate-y-full bg-[var(--color-secondary-container)] opacity-20 transition-transform duration-300 group-hover:translate-y-0"></span>
       </a>
-    )}
+    </div>
   </div>
 </section>

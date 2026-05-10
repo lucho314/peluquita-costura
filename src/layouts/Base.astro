@@ -13,13 +13,13 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[]
 }
 
-const defaultImage = '/logo.png'
+const defaultImage = '/og-imagen.jpg'
 
 const {
   title,
   description = 'Costura artesanal hecha a medida en Paraná, Entre Ríos. Prendas, accesorios textiles y confecciones personalizadas con dedicación y calidad.',
   image = defaultImage,
-  imageAlt = 'Logo de Peluquita Costuras',
+  imageAlt = 'Peluquita Costura, taller de costura artesanal hecho con amor',
   ogType = 'website',
   jsonLd = []
 } = Astro.props
@@ -74,7 +74,7 @@ const structuredData = [
     '@id': new URL('/#website', siteUrl).toString(),
     name: 'Peluquita Costuras',
     url: siteUrl.toString(),
-    image: new URL('/logo.png', siteUrl).toString(),
+    image: imageUrl,
     inLanguage: 'es-AR',
     publisher: {
       '@id': new URL('/#negocio', siteUrl).toString()
@@ -92,7 +92,7 @@ const structuredData = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="author" content="Peluquita Costuras" />
-    <meta name="theme-color" content="#8b4557" />
+    <meta name="theme-color" content="#6f2e40" />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang="es-AR" href={canonicalUrl} />
     <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
@@ -102,7 +102,7 @@ const structuredData = [
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Caslon+Text:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Manrope:wght@300;400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="es_AR" />
     <meta property="og:site_name" content="Peluquita Costuras" />
@@ -110,9 +110,10 @@ const structuredData = [
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:secure_url" content={imageUrl} />
     <meta property="og:image:alt" content={imageAlt} />
-    {isDefaultImage && <meta property="og:image:type" content="image/png" />}
-    {isDefaultImage && <meta property="og:image:width" content="1024" />}
+    {isDefaultImage && <meta property="og:image:type" content="image/jpeg" />}
+    {isDefaultImage && <meta property="og:image:width" content="1536" />}
     {isDefaultImage && <meta property="og:image:height" content="1024" />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
@@ -124,7 +125,7 @@ const structuredData = [
     <ClientRouter />
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
   </head>
-  <body class="flex flex-col min-h-screen">
+  <body class="flex flex-col min-h-screen bg-[var(--color-background)] text-[var(--color-on-background)]">
     <div id="page-loading" class="page-loading" role="status" aria-live="polite" aria-hidden="true" hidden transition:persist>
       <span class="page-loading__spinner" aria-hidden="true"></span>
       <span>Cargando...</span>
@@ -182,11 +183,11 @@ const structuredData = [
 
 <style is:global>
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Manrope', sans-serif;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Libre Caslon Text', serif;
+    font-family: 'Noto Serif', serif;
   }
 
   .page-loading {

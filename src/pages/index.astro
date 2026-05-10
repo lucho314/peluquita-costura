@@ -51,19 +51,21 @@ const homeJsonLd = {
   />
 
   <!-- Productos destacados -->
-  <section class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 mb-4">
+  <section class="mx-auto max-w-7xl px-6 py-24 sm:px-8">
+    <div class="mb-16 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
+      <div>
+        <h2 class="font-headline text-4xl text-[var(--color-primary)]">
           Nuestras Creaciones
         </h2>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Descubrí nuestra selección de prendas y confecciones artesanales
-        </p>
+        <div class="mt-4 h-1 w-24 bg-[var(--color-secondary-container)]"></div>
       </div>
+      <p class="font-body max-w-xs text-[var(--color-on-surface-variant)] italic">
+        Piezas exclusivas que cuentan una historia en cada puntada.
+      </p>
+    </div>
 
       {productosConImagenes.length > 0 ? (
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div class="featured-grid mb-10 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {productosConImagenes.map((producto) => (
             <ProductCard
               id={producto.id}
@@ -76,55 +78,93 @@ const homeJsonLd = {
         </div>
       ) : (
         <div class="text-center py-12">
-          <p class="text-gray-500 text-lg">No hay productos disponibles en este momento.</p>
+          <p class="text-lg text-[var(--color-on-surface-variant)]">No hay productos disponibles en este momento.</p>
         </div>
       )}
 
       <div class="text-center">
         <a
           href="/productos"
-          class="inline-flex items-center px-6 py-3 border-2 border-[var(--color-primary)] text-base font-medium rounded-md text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white transition-colors"
+          class="font-label inline-flex items-center rounded-full border border-[var(--color-primary)] px-8 py-3 text-sm font-bold uppercase tracking-widest text-[var(--color-primary)] transition-all hover:-translate-y-1 hover:bg-[var(--color-primary)] hover:text-white hover:shadow-xl"
         >
           Ver catálogo completo
         </a>
       </div>
-    </div>
   </section>
 
   <!-- Sobre nosotros -->
-  <section class="py-16 bg-gray-50">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center">
-        <h2 class="text-3xl sm:text-4xl font-serif font-bold text-gray-900 mb-6">
-          Sobre Nosotros
+  <section class="overflow-hidden bg-[var(--color-secondary-container)]/20 px-6 py-24 sm:px-8">
+    <div class="mx-auto flex max-w-7xl flex-col items-center gap-16 md:flex-row">
+      <div class="relative w-full md:w-1/2">
+        <div class="absolute -left-4 -top-4 h-full w-full rounded-xl border border-[var(--color-secondary)]/30"></div>
+        <img
+          src="/hero-costura.webp"
+          alt="Taller de costura artesanal con materiales y herramientas de confección"
+          width="1551"
+          height="1014"
+          loading="lazy"
+          decoding="async"
+          class="relative z-10 h-[500px] w-full rounded-xl object-cover shadow-lg"
+        />
+      </div>
+      <div class="w-full md:w-1/2">
+        <span class="font-label mb-4 block text-xs font-bold uppercase tracking-widest text-[var(--color-secondary)]">
+          Nuestra Historia
+        </span>
+        <h2 class="font-headline mb-8 text-4xl text-[var(--color-primary)]">
+          El arte de lo hecho a mano
         </h2>
-        <p class="text-lg text-gray-700 mb-6">
+        <p class="font-body mb-6 text-lg leading-relaxed text-[var(--color-on-surface-variant)]">
           En Peluquita Costuras nos dedicamos a la confección de prendas y accesorios textiles únicos y personalizados.
           Cada pieza es trabajada con dedicación y atención al detalle, utilizando materiales de primera calidad.
         </p>
-        <p class="text-lg text-gray-700">
+        <p class="font-body mb-8 text-lg leading-relaxed text-[var(--color-on-surface-variant)] italic">
           Desde vestidos a medida hasta almohadones bordados, cortinas artesanales y bolsos de tela,
           cada confección refleja nuestro compromiso con la excelencia y el diseño personalizado.
         </p>
+        <div class="flex items-center gap-8 border-t border-[var(--color-outline-variant)]/30 pt-8">
+          <div>
+            <p class="font-headline text-2xl text-[var(--color-primary)]">25+</p>
+            <p class="font-label text-xs uppercase tracking-tight text-[var(--color-on-surface-variant)]">Años de tradición</p>
+          </div>
+          <div class="h-10 w-px bg-[var(--color-outline-variant)]/30"></div>
+          <div>
+            <p class="font-headline text-2xl text-[var(--color-primary)]">100%</p>
+            <p class="font-label text-xs uppercase tracking-tight text-[var(--color-on-surface-variant)]">Hecho a mano</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- CTA Banner -->
-  <section class="py-16 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mb-4">
+  <section class="relative flex flex-col items-center overflow-hidden px-6 py-24 text-center sm:px-8">
+    <div class="absolute inset-0 z-0 bg-[var(--color-secondary-container)]/30"></div>
+    <div class="relative z-10 max-w-3xl">
+      <h2 class="font-headline mb-6 text-4xl text-[var(--color-primary)] md:text-5xl">
         ¿Necesitás algo a medida?
       </h2>
-      <p class="text-xl text-white/90 mb-8">
+      <p class="font-body mb-10 text-xl leading-relaxed text-[var(--color-on-surface-variant)]">
         Contactanos y te ayudamos a crear la confección perfecta para vos
       </p>
       <a
         href="/contacto"
-        class="inline-flex items-center px-8 py-3 border-2 border-white text-base font-medium rounded-md text-white hover:bg-white hover:text-[var(--color-primary)] transition-colors"
+        class="font-label inline-flex rounded-full bg-[var(--color-primary)] px-12 py-4 font-bold uppercase tracking-widest text-white shadow-md transition-all hover:-translate-y-1 hover:bg-[var(--color-secondary)] hover:shadow-xl"
       >
-        Contactar ahora
+        Consultar
       </a>
     </div>
   </section>
 </Base>
+
+<style>
+  .featured-grid > :global(article:nth-child(even)) {
+    padding-top: 3rem;
+  }
+
+  @media (max-width: 767px) {
+    .featured-grid > :global(article:nth-child(even)) {
+      padding-top: 0;
+    }
+  }
+</style>

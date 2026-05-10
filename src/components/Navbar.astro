@@ -4,31 +4,30 @@ const navLinks = [
   { href: '/productos', label: 'Catálogo' },
   { href: '/contacto', label: 'Contacto' }
 ]
+
+const currentPath = Astro.url.pathname
 ---
 
-<nav class="bg-white shadow-sm border-b border-gray-100">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-16">
+<nav class="fixed top-0 z-50 w-full bg-[var(--color-background)]/80 shadow-sm backdrop-blur-md transition-all duration-300">
+  <div class="mx-auto max-w-7xl px-6 sm:px-8">
+    <div class="flex h-20 items-center justify-between">
       <div class="flex-shrink-0">
-        <a href="/" class="flex items-center gap-3 text-2xl font-serif font-bold" style="color: var(--color-primary)">
-          <img
-            src="/logo.png"
-            alt=""
-            width="40"
-            height="40"
-            class="h-10 w-10 rounded-full object-cover"
-            decoding="async"
-          />
-          <span>Peluquita Costuras</span>
+        <a href="/" class="font-script text-3xl text-[var(--color-primary)] transition-opacity hover:opacity-80 sm:text-4xl">
+          Peluquita Costura
         </a>
       </div>
       
       <div class="hidden md:block">
-        <div class="ml-10 flex items-baseline space-x-8">
+        <div class="ml-10 flex items-center gap-10">
           {navLinks.map((link) => (
             <a
               href={link.href}
-              class="text-gray-700 hover:text-[var(--color-primary)] px-3 py-2 text-sm font-medium transition-colors"
+              class:list={[
+                'font-headline pb-1 text-lg tracking-tight transition-colors',
+                currentPath === link.href
+                  ? 'border-b-2 border-[var(--color-secondary-container)] font-bold text-[var(--color-primary)]'
+                  : 'text-stone-600 hover:text-[var(--color-primary)]'
+              ]}
             >
               {link.label}
             </a>
@@ -36,11 +35,17 @@ const navLinks = [
         </div>
       </div>
 
+      <div class="hidden items-center gap-6 text-[var(--color-primary)] md:flex" aria-hidden="true">
+        <span class="text-xl">✂</span>
+        <span class="h-8 w-px bg-[var(--color-outline-variant)]"></span>
+        <span class="font-label text-xs uppercase tracking-[0.24em]">Atelier</span>
+      </div>
+
       <!-- Mobile menu button -->
       <div class="md:hidden">
         <button
           type="button"
-          class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[var(--color-primary)] focus:outline-none"
+          class="inline-flex items-center justify-center rounded-full border border-[var(--color-outline-variant)] p-2 text-[var(--color-primary)] hover:bg-[var(--color-secondary-container)]/30 focus:outline-none"
           aria-label="Toggle menu"
           id="mobile-menu-button"
         >
@@ -53,12 +58,12 @@ const navLinks = [
   </div>
 
   <!-- Mobile menu -->
-  <div class="md:hidden hidden" id="mobile-menu">
-    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+  <div class="hidden border-t border-[var(--color-outline-variant)] bg-[var(--color-background)]/95 md:hidden" id="mobile-menu">
+    <div class="space-y-1 px-4 pb-5 pt-2">
       {navLinks.map((link) => (
         <a
           href={link.href}
-          class="text-gray-700 hover:text-[var(--color-primary)] block px-3 py-2 text-base font-medium"
+          class="font-headline block px-3 py-2 text-base text-stone-700 hover:text-[var(--color-primary)]"
         >
           {link.label}
         </a>

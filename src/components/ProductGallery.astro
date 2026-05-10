@@ -14,10 +14,12 @@ const { images, productName, productId } = Astro.props
 const sortedImages = images
 ---
 
-<div class="space-y-4">
+<div class="space-y-5">
   {sortedImages.length > 0 ? (
     <>
-      <div class="aspect-square overflow-hidden rounded-lg bg-gray-100">
+      <div class="relative">
+        <div class="absolute -left-4 -top-4 hidden h-full w-full rounded-xl border border-[var(--color-secondary)]/30 sm:block"></div>
+        <div class="relative aspect-[4/5] overflow-hidden rounded-xl bg-[var(--color-surface-container)] shadow-[0_24px_70px_rgba(31,27,19,0.14)]">
         <img
           id="main-image"
           src={sortedImages[0].url}
@@ -29,19 +31,20 @@ const sortedImages = images
           loading="eager"
           fetchpriority="high"
           decoding="async"
-          class="w-full h-full object-cover"
+          class="h-full w-full object-cover"
         />
+        </div>
       </div>
       
       {sortedImages.length > 1 && (
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-4 gap-3 sm:gap-4">
           {sortedImages.map((image, index) => (
             <button
               type="button"
               data-image={image.url}
               data-alt={image.alt || `${productName} - imagen ${index + 1}`}
               aria-label={`Ver imagen ${index + 1} de ${productName}`}
-              class="aspect-square overflow-hidden rounded-md bg-gray-100 hover:ring-2 hover:ring-[var(--color-primary)] transition-all thumbnail"
+              class="thumbnail aspect-square overflow-hidden rounded-lg bg-[var(--color-surface-container)] ring-1 ring-[var(--color-outline-variant)]/60 transition-all hover:-translate-y-1 hover:ring-2 hover:ring-[var(--color-primary)]"
             >
               <img
                 src={image.url}
@@ -49,7 +52,7 @@ const sortedImages = images
                 width="200"
                 height="200"
                 sizes="(min-width: 1024px) 12vw, 25vw"
-                class="w-full h-full object-cover"
+                class="h-full w-full object-cover"
                 loading="lazy"
                 decoding="async"
               />
@@ -59,8 +62,8 @@ const sortedImages = images
       )}
     </>
   ) : (
-    <div class="aspect-square rounded-lg bg-gray-100 flex items-center justify-center">
-      <p class="text-gray-400">Sin imágenes disponibles</p>
+    <div class="flex aspect-[4/5] items-center justify-center rounded-xl bg-[var(--color-surface-container)] ring-1 ring-[var(--color-outline-variant)]/60">
+      <p class="font-label text-sm uppercase tracking-widest text-[var(--color-on-surface-variant)]">Sin imágenes disponibles</p>
     </div>
   )}
 </div>
